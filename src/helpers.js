@@ -6,9 +6,16 @@ export const findIndex = (event, coords) => {
 
     coords.forEach(({middleVertical}) => {
         if(clientY >= middleVertical) {
-        ++index;
+            ++index;
         }
     })
 
     return index;
+};
+
+export const isInsideOfRect = (event, coords) => {
+    const { clientY, clientX } = event;
+    const { left, right, top, bottom} = coords;
+
+    return !(clientX < left || clientX > right || clientY < top || clientY > bottom);
 };

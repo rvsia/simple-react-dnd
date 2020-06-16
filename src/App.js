@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react';
 
 import DndProvider from './Provider';
-import Draggable from './Draggable';
+import Draggable from './DraggableContainer';
 import Droppable from './Droppable';
 
 import './App.css';
@@ -13,10 +13,6 @@ const setColumns = (state, {source, destination}) => {
   }
 
   let index = destination.index;
-
-  if(source.id === destination.id) {
-    --index;
-  }
 
   removedState[destination.id].splice(index, 0, source.draggableId);
 
@@ -32,13 +28,9 @@ const reducer = (state, {type, ...payload}) => {
         selectedItem: null
       };
     case 'selectItem':
-      if(state === payload.item) {
-        return state;
-      }
-
       return {
         ...state,
-        selectedItem: payload.item
+        selectedItem: payload.item.id
       }
     default:
       return state;
@@ -67,10 +59,10 @@ function App() {
           onDrop={(source, destination) => dispatch({type: 'setColumns', source, destination})}
         >
           <Droppable id="hornilist">
-            {state.hornilist.map((id) => <Draggable key={id} id={id} />)}
+            {state.hornilist.map((id, index) => <Draggable key={id} id={id} index={index} />)}
           </Droppable>
           <Droppable id="dolnilist">
-            {state.dolnilist.map((id) => <Draggable key={id} id={id} />)}
+            {state.dolnilist.map((id, index) => <Draggable key={id} id={id} index={index} />)}
           </Droppable>
         </DndProvider>
         <div>

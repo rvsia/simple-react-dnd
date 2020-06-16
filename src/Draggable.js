@@ -1,15 +1,18 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef } from 'react';
 
 import { DnDContext } from './context';
 
-const Draggable = ({id, children}) => {
+
+const Draggable = ({id, children, index}) => {
     const { onSelect } = useContext(DnDContext);
+    const div = useRef();
 
     const onDragStart = e => {
-      const sourceId = document.getElementById(id).parentElement.id;
+      const sourceId = document.getElementById(id).parentElement.parentElement.id;
 
       e.dataTransfer.setData('id', id);
       e.dataTransfer.setData('source', sourceId);
+      e.dataTransfer.setData('source-index', index);
 
       onSelect({id})
     }
@@ -32,6 +35,7 @@ const Draggable = ({id, children}) => {
       tabIndex={0}
       className="draggable"
       onKeyDown={onKeyDown}
+      ref={div}
     >
       {id}
       {children}
